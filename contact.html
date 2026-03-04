@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="تواصل مع Loving Homes Hotel لطلب معلومات أو ترتيب حزمة مخصصة." />
+  <title>Loving Homes Hotel | تواصل معنا</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <a class="skip-link" href="#main">تخطي إلى المحتوى</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">🐾</span>
+        <div>
+          <h1 class="site-title">Loving Homes Hotel</h1>
+          <p class="site-subtitle">فندق الكلاب — رعاية، راحة، وأمان</p>
+        </div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        القائمة
+      </button>
+
+      <nav id="site-nav" class="site-nav" aria-label="التنقل الرئيسي">
+        <a class="nav-link" href="index.html">الرئيسية</a>
+        <a class="nav-link" href="about.html">عن الشركة</a>
+        <a class="nav-link" href="facilities.html">المرافق والخدمات</a>
+        <a class="nav-link" href="packages.html">الحزم</a>
+        <a class="nav-link active" href="contact.html">تواصل معنا</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container section">
+      <h2>تواصل معنا</h2>
+
+      <p>
+        إذا كنت ترغب في معرفة المزيد عن الخدمات أو ترتيب حزمة مخصصة للإقامات الطويلة أو للكلاب ذات المتطلبات الإضافية،
+        يمكنك استخدام النموذج التالي للتواصل معنا.
+      </p>
+
+      <div class="card">
+        <form id="contactForm" novalidate>
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="name">الاسم <span class="req" aria-hidden="true">*</span></label>
+              <input type="text" id="name" name="name" autocomplete="name" required />
+              <p class="field-hint">اكتب اسمك الكامل.</p>
+            </div>
+
+            <div class="form-field">
+              <label for="email">البريد الإلكتروني <span class="req" aria-hidden="true">*</span></label>
+              <input type="email" id="email" name="email" autocomplete="email" required />
+              <p class="field-hint">مثال: name@example.com</p>
+            </div>
+
+            <div class="form-field">
+              <label for="package">نوع الحزمة</label>
+              <select id="package" name="package">
+                <option value="premium">الحزمة المميزة</option>
+                <option value="classic">الحزمة الكلاسيكية</option>
+                <option value="day">حزمة اليوم</option>
+                <option value="custom">حزمة مخصصة</option>
+              </select>
+              <p class="field-hint">اختر الحزمة المطلوبة أو اختر “حزمة مخصصة”.</p>
+            </div>
+
+            <div class="form-field form-full">
+              <label for="message">الرسالة <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="message" name="message" rows="5" required></textarea>
+              <p class="field-hint">اشرح طلبك (مدة الإقامة، متطلبات خاصة، وقت التوصيل...).</p>
+            </div>
+          </div>
+
+          <button class="btn" type="submit">إرسال الطلب</button>
+
+          <p id="successMessage" class="small success" style="display:none"></p>
+        </form>
+
+        <hr class="divider" />
+
+        <h3>الطلبات المحفوظة على هذا الجهاز</h3>
+        <p class="small">
+          ملاحظة: يتم حفظ الطلبات محليًا داخل هذا المتصفح (localStorage).
+        </p>
+
+        <div id="savedRequests" class="saved-requests"></div>
+
+        <button id="clearRequestsBtn" class="btn btn-outline" type="button" style="margin-top:10px">
+          مسح كل الطلبات المحفوظة
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Loving Homes Hotel —</p>
+      <p class="small">
+        تواصل معنا لطلب المزيد من المعلومات أو لترتيب حزمة مخصصة.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

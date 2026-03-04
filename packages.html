@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="حزم Loving Homes Hotel: المميزة، الكلاسيكية، واليوم، بالإضافة إلى الحزم المخصصة." />
+  <title>Loving Homes Hotel | الحزم</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">تخطي إلى المحتوى</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">🐾</span>
+        <div>
+          <h1 class="site-title">Loving Homes Hotel</h1>
+          <p class="site-subtitle">فندق الكلاب — رعاية، راحة، وأمان</p>
+        </div>
+      </div>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">القائمة</button>
+
+      <nav id="site-nav" class="site-nav" aria-label="التنقل الرئيسي">
+        <a class="nav-link" href="index.html">الرئيسية</a>
+        <a class="nav-link" href="about.html">عن الشركة</a>
+        <a class="nav-link" href="facilities.html">المرافق والخدمات</a>
+        <a class="nav-link active" href="packages.html">الحزم</a>
+        <a class="nav-link" href="contact.html">تواصل معنا</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="container section">
+      <h2>الحزم المقدمة</h2>
+      <p class="small">اضغط على أي حزمة لعرض الصورة والشرح، ثم يمكنك طلبها مباشرة.</p>
+    </section>
+
+    <!-- Cards -->
+    <section class="container section">
+      <div class="packages-grid">
+        <!-- Premium -->
+        <button class="package-card pkg-btn" type="button"
+          data-key="premium"
+          data-title="الحزمة المميزة"
+          data-img="images/premium.jpg"
+          data-desc="المشي أربع مرات / ممارسة أربعة أنشطة يوميًا — مساحة عشب خاصة — تحديثات/صور يومية — مكافآت (على النحو المتفق عليه مع صاحب الحيوان الأليف).">
+          
+          <div class="pkg-thumb">
+            <img src="images/premium.jpg" alt="صورة للحزمة المميزة" loading="lazy">
+            <span class="pkg-badge">الأكثر تميزًا</span>
+          </div>
+
+          <div class="pkg-body">
+            <h3>الحزمة المميزة</h3>
+            <ul class="pkg-points">
+              <li>4 مرات مشي / 4 أنشطة</li>
+              <li>مساحة عشب خاصة</li>
+              <li>صور يومية + مكافآت</li>
+            </ul>
+            <span class="pkg-hint">اضغط لعرض التفاصيل</span>
+          </div>
+        </button>
+
+        <!-- Classic -->
+        <button class="package-card pkg-btn" type="button"
+          data-key="classic"
+          data-title="الحزمة الكلاسيكية"
+          data-img="images/classic.jpg"
+          data-desc="المشي ثلاث مرات / ممارسة ثلاث أنشطة يوميًا — حظيرة لعب داخلية — منطقة للاسترخاء — جلسة حلاقة وتنظيف.">
+          
+          <div class="pkg-thumb">
+            <img src="images/classic.jpg" alt="صورة للحزمة الكلاسيكية" loading="lazy">
+            <span class="pkg-badge pkg-badge2">الأكثر توازنًا</span>
+          </div>
+
+          <div class="pkg-body">
+            <h3>الحزمة الكلاسيكية</h3>
+            <ul class="pkg-points">
+              <li>3 مرات مشي / 3 أنشطة</li>
+              <li>حظيرة لعب داخلية</li>
+              <li>استرخاء + حلاقة</li>
+            </ul>
+            <span class="pkg-hint">اضغط لعرض التفاصيل</span>
+          </div>
+        </button>
+
+        <!-- Day -->
+        <button class="package-card pkg-btn" type="button"
+          data-key="day"
+          data-title="حزمة اليوم"
+          data-img="images/day.jpg"
+          data-desc="المشي مرتين يوميًا — منطقة لعب خارجية — مسار الرشاقة — حفر حفرة في الرمل.">
+          
+          <div class="pkg-thumb">
+            <img src="images/day.jpg" alt="صورة لحزمة اليوم" loading="lazy">
+            <span class="pkg-badge pkg-badge3">للزيارة القصيرة</span>
+          </div>
+
+          <div class="pkg-body">
+            <h3>حزمة اليوم</h3>
+            <ul class="pkg-points">
+              <li>مشي مرتين يوميًا</li>
+              <li>لعب خارجية + رشاقة</li>
+              <li>حفر حفرة في الرمل</li>
+            </ul>
+            <span class="pkg-hint">اضغط لعرض التفاصيل</span>
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- View -->
+    <section class="container section">
+      <div class="card pkg-view" aria-live="polite">
+        <h3 id="pkgTitle">اختر حزمة لعرض التفاصيل</h3>
+        <img id="pkgImg" src="" alt="" style="display:none" />
+        <p id="pkgDesc" class="pkg-desc"></p>
+
+        <div class="pkg-cta">
+          <button id="requestPkgBtn" class="btn" type="button" style="display:none">اطلب هذه الحزمة</button>
+          <a class="btn btn-outline" href="contact.html">تواصل مباشرة</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Custom -->
+    <section class="container section">
+      <h2>الحزم المخصصة</h2>
+      <div class="card">
+        <p>
+          تتوفر حزم مخصصة للإقامات الطويلة أو للكلاب ذات المتطلبات الإضافية.
+          يجب على العملاء الاتصال بالشركة لترتيب أي حزم مخصصة.
+        </p>
+        <div class="hero-actions" style="margin-top:10px">
+          <a class="btn" href="contact.html">تواصل لترتيب حزمة مخصصة</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> Loving Homes Hotel — جميع الحقوق محفوظة</p>
+      <p class="small">نسخة بعد التحسين</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
