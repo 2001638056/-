@@ -45,7 +45,14 @@
       </p>
 
       <div class="card">
-        <form id="contactForm" novalidate>
+        <form
+          id="contactForm"
+          action="https://formspree.io/f/xyknydnj"
+          method="POST"
+        >
+          <input type="hidden" name="_subject" value="طلب جديد من موقع Loving Homes Hotel" />
+          <input type="hidden" name="_language" value="ar" />
+
           <div class="form-grid">
             <div class="form-field">
               <label for="name">الاسم <span class="req" aria-hidden="true">*</span></label>
@@ -67,13 +74,13 @@
                 <option value="day">حزمة اليوم</option>
                 <option value="custom">حزمة مخصصة</option>
               </select>
-              <p class="field-hint">اختر الحزمة المطلوبة أو اختر “حزمة مخصصة”.</p>
+              <p class="field-hint">اختر الحزمة المطلوبة أو اختر حزمة مخصصة.</p>
             </div>
 
             <div class="form-field form-full">
               <label for="message">الرسالة <span class="req" aria-hidden="true">*</span></label>
               <textarea id="message" name="message" rows="5" required></textarea>
-              <p class="field-hint">اشرح طلبك (مدة الإقامة، متطلبات خاصة، وقت التوصيل...).</p>
+              <p class="field-hint">اشرح طلبك مثل مدة الإقامة أو المتطلبات الخاصة أو وقت التوصيل.</p>
             </div>
           </div>
 
@@ -86,7 +93,7 @@
 
         <h3>الطلبات المحفوظة على هذا الجهاز</h3>
         <p class="small">
-          ملاحظة: يتم حفظ الطلبات محليًا داخل هذا المتصفح (localStorage).
+          ملاحظة: يتم حفظ الطلبات محليًا داخل هذا المتصفح.
         </p>
 
         <div id="savedRequests" class="saved-requests"></div>
