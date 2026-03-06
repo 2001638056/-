@@ -26,9 +26,11 @@ function loadRequests() {
     return [];
   }
 }
+
 function saveRequests(arr) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
 }
+
 function packageLabel(value) {
   const map = {
     premium: "الحزمة المميزة",
@@ -38,6 +40,7 @@ function packageLabel(value) {
   };
   return map[value] || "غير محدد";
 }
+
 function escapeHtml(str) {
   return String(str)
     .replaceAll("&", "&amp;")
@@ -46,37 +49,44 @@ function escapeHtml(str) {
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
+
 function renderRequests() {
   const box = document.getElementById("savedRequests");
   if (!box) return;
 
   const requests = loadRequests();
+
   if (requests.length === 0) {
     box.innerHTML = `<p class="small">لا يوجد طلبات محفوظة بعد.</p>`;
     return;
   }
 
-  box.innerHTML = requests.slice().reverse().map((r) => {
-    const when = new Date(r.createdAt).toLocaleString("ar");
-    return `
-      <div class="card" style="margin-top:10px">
-        <h4 style="margin:0 0 6px 0">طلب: ${escapeHtml(packageLabel(r.package))}</h4>
-        <p class="small" style="margin:0 0 6px 0"><strong>الاسم:</strong> ${escapeHtml(r.name)} — <strong>البريد:</strong> ${escapeHtml(r.email)}</p>
-        <p class="small" style="margin:0 0 6px 0"><strong>التاريخ:</strong> ${escapeHtml(when)}</p>
-        <p style="margin:0"><strong>الرسالة:</strong> ${escapeHtml(r.message)}</p>
-      </div>
-    `;
-  }).join("");
+  box.innerHTML = requests
+    .slice()
+    .reverse()
+    .map((r) => {
+      const when = new Date(r.createdAt).toLocaleString("ar");
+      return `
+        <div class="card" style="margin-top:10px">
+          <h4 style="margin:0 0 6px 0">طلب: ${escapeHtml(packageLabel(r.package))}</h4>
+          <p class="small" style="margin:0 0 6px 0"><strong>الاسم:</strong> ${escapeHtml(r.name)} — <strong>البريد:</strong> ${escapeHtml(r.email)}</p>
+          <p class="small" style="margin:0 0 6px 0"><strong>التاريخ:</strong> ${escapeHtml(when)}</p>
+          <p style="margin:0"><strong>الرسالة:</strong> ${escapeHtml(r.message)}</p>
+        </div>
+      `;
+    })
+    .join("");
 }
 
-// ====== نموذج التواصل (After) ======
+// ====== نموذج التواصل ======
 const form = document.getElementById("contactForm");
+
 if (form) {
   const successMsg = document.getElementById("successMessage");
   const clearBtn = document.getElementById("clearRequestsBtn");
+  const pkgSelect = document.getElementById("package");
 
   // تعبئة اختيار الحزمة إذا جاء من صفحة الحزم
-  const pkgSelect = document.getElementById("package");
   const savedPkg = localStorage.getItem(SELECTED_PKG_KEY);
   if (pkgSelect && savedPkg) {
     pkgSelect.value = savedPkg;
@@ -84,12 +94,7 @@ if (form) {
 
   renderRequests();
 
-  function setError(id, msg) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = msg || "";
-  }
-
-  form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const nameEl = document.getElementById("name");
@@ -102,36 +107,79 @@ if (form) {
     const pkg = pkgEl?.value || "custom";
     const message = msgEl?.value.trim() || "";
 
-    let ok = true;
-
-    if (!name) { ok = false; alert("الرجاء إدخال الاسم."); }
-    if (!email) { ok = false; alert("الرجاء إدخال البريد الإلكتروني."); }
-    if (!message) { ok = false; alert("الرجاء كتابة الرسالة."); }
-
-    if (!ok) return;
-
-    const requests = loadRequests();
-    requests.push({ name, email, package: pkg, message, createdAt: new Date().toISOString() });
-    saveRequests(requests);
-
-    if (successMsg) {
-      successMsg.style.display = "block";
-      successMsg.textContent = `تم حفظ طلبك بنجاح: ${packageLabel(pkg)} ✅`;
+    if (!name) {
+      alert("الرجاء إدخال الاسم.");
+      return;
     }
 
-    // إزالة اختيار الحزمة المحفوظ بعد إرسال الطلب
-    localStorage.removeItem(SELECTED_PKG_KEY);
+    if (!email) {
+      alert("الرجاء إدخال البريد الإلكتروني.");
+      return;
+    }
+
+    if (!message) {
+      alert("الرجاء كتابة الرسالة.");
+      return;
+    }
+
+    // حفظ الطلب محليًا
+    const requests = loadRequests();
+    requests.push({
+      name,
+      email,
+      package: pkg,
+      message,
+      createdAt: new Date().toISOString()
+    });
+    saveRequests(requests);
 
     renderRequests();
-    form.reset();
+
+    // إرسال الطلب إلى Formspree
+    try {
+      const formData = new FormData(form);
+
+      // إضافة نص واضح لاسم الحزمة في الإيميل
+      formData.set("package", packageLabel(pkg));
+
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: {
+          Accept: "application/json"
+        }
+      });
+
+      if (response.ok) {
+        if (successMsg) {
+          successMsg.style.display = "block";
+          successMsg.textContent = `تم إرسال طلبك بنجاح وسيصلك رد قريبًا ✅`;
+        }
+
+        localStorage.removeItem(SELECTED_PKG_KEY);
+        form.reset();
+      } else {
+        if (successMsg) {
+          successMsg.style.display = "block";
+          successMsg.textContent = "تم حفظ الطلب على هذا الجهاز، لكن حدثت مشكلة في إرسال الإيميل.";
+        }
+      }
+    } catch (error) {
+      if (successMsg) {
+        successMsg.style.display = "block";
+        successMsg.textContent = "تم حفظ الطلب على هذا الجهاز، لكن تعذر إرسال الإيميل حاليًا.";
+      }
+    }
   });
 
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
       const ok = confirm("هل تريد مسح كل الطلبات المحفوظة على هذا الجهاز؟");
       if (!ok) return;
+
       localStorage.removeItem(STORAGE_KEY);
       renderRequests();
+
       if (successMsg) {
         successMsg.style.display = "block";
         successMsg.textContent = "تم مسح كل الطلبات المحفوظة ✅";
@@ -143,47 +191,45 @@ if (form) {
 // ====== تفاعل صفحة الحزم + زر طلب الحزمة ======
 const pkgButtons = document.querySelectorAll(".pkg-btn");
 
-if(pkgButtons.length){
+if (pkgButtons.length) {
+  const titleEl = document.getElementById("pkgTitle");
+  const imgEl = document.getElementById("pkgImg");
+  const descEl = document.getElementById("pkgDesc");
+  const requestBtn = document.getElementById("requestPkgBtn");
 
-const titleEl = document.getElementById("pkgTitle");
-const imgEl = document.getElementById("pkgImg");
-const descEl = document.getElementById("pkgDesc");
-const requestBtn = document.getElementById("requestPkgBtn");
+  let currentPkg = "";
 
-let currentPkg = "";
+  pkgButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      pkgButtons.forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
 
-pkgButtons.forEach(btn => {
+      const title = btn.dataset.title || "";
+      const img = btn.dataset.img || "";
+      const desc = btn.dataset.desc || "";
+      const key = btn.dataset.key || "";
 
-btn.addEventListener("click", () => {
+      currentPkg = key;
 
-pkgButtons.forEach(b => b.classList.remove("active"));
-btn.classList.add("active");
+      if (titleEl) titleEl.textContent = title;
+      if (descEl) descEl.textContent = desc;
 
-const title = btn.dataset.title;
-const img = btn.dataset.img;
-const desc = btn.dataset.desc;
-const key = btn.dataset.key;
+      if (imgEl) {
+        imgEl.src = img;
+        imgEl.style.display = "block";
+        imgEl.alt = `صورة توضيحية لـ ${title}`;
+      }
 
-currentPkg = key;
+      if (requestBtn) {
+        requestBtn.style.display = "inline-flex";
+      }
+    });
+  });
 
-titleEl.textContent = title;
-descEl.textContent = desc;
-
-imgEl.src = img;
-imgEl.style.display = "block";
-
-requestBtn.style.display = "inline-flex";
-
-});
-
-});
-
-requestBtn.addEventListener("click", () => {
-
-localStorage.setItem("selectedPackage", currentPkg);
-
-window.location.href = "contact.html";
-
-});
-
+  if (requestBtn) {
+    requestBtn.addEventListener("click", () => {
+      localStorage.setItem(SELECTED_PKG_KEY, currentPkg);
+      window.location.href = "contact.html";
+    });
+  }
 }
